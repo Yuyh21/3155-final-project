@@ -78,17 +78,18 @@ app.layout = html.Div(children=[
               )
 ])
 
+
 @app.callback(Output('graph1', 'figure'),
               [Input('select-state', 'value')])
 def update_figure(selected_state):
-    filtered_df = df2[df2['state'] == selected_state]
+    new_df = df2[df2['state'] == selected_state]
 
-    filtered_df = filtered_df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
-    new_df = filtered_df.groupby(['state']).sum().reset_index()
-    data_interactive_barchart = [go.Bar(x=new_df['date'], y=new_df['unemployment'])]
-    return {'data': data_interactive_barchart, 'layout': go.Layout(title='Unemployment rate in '+selected_state,
-                                                                   xaxis={'title': 'State'},
-                                                                   yaxis={'title': 'Unemployment Rate'})}
+    data_state_unemployment = [
+        go.Scatter(x=new_df['date'], y=new_df['unemployment'], mode='lines', name='Unemployment')]
+    return {'data': data_state_unemployment, 'layout': go.Layout(title='Unemployment rate in ' + selected_state,
+                                                                 xaxis={'title': 'State'},
+                                                                 yaxis={'title': 'Unemployment Rate'})}
+
 
 if __name__ == '__main__':
     app.run_server()
