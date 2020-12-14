@@ -1,0 +1,24 @@
+Scenarios:
+
+#1: Kate has an assignment for her undergraduate course that requires her to find out current updated information about the U.S. economy and relate it to the U.S. economy from 10 years ago. She needs to report on her findings on the economic changes if it progressed or worsened and have data supporting her claims. She researches a website and comes across the website called “USeconlive.com”. Kate doesn’t have a specific industry in mind to look at, only the overall view of the economy. She notices when she clicks on the website there is a featured home page with the U.S. economy with highlighted industries/topics that specifically address the economy such as GDP and unemployment rate. From there kate can gather information and conclude from the website and compare it with her findings from the U.S. economy from 10 years ago.
+
+#2: Jordan is very interested in keeping up to date with politics, As a Political Science professor he wants to inform his students on relevant news and data. With recent news on the focus of the U.S. economy around the election and being in a pandemic, he decides to give his students an assignment to gather information about the U.S. economy and the effects that the pandemic has on it, such as what industries were affected by it. He wants to give his students a good resource to gather information, rather than having them look up multiple data tables and charts. He comes across the website called “USeconlive.com”, he sees the multiple categories and wide selection that his students can report on. His students can use data gathered from the website and compare them with the previous timeline before the pandemic hit.
+
+
+User Stories:
+
+As a Student, I want to be able to see a general view of the US economy without having to filter by a specific Industry/topic
+
+As a Professor, I want to be able to filter specific Industry/topic for my students to explore a variety of topics to choose from for an assignment
+
+As a Citizen, I want to know how my economy is doing so that I can make the best choice for the upcoming election.
+
+Feature List:
+
+-Filter by Industry/Topic
+-Display data from week/month/year
+-Display by graph
+-Display by table
+-Search bar
+-Information Tab
+-Displays the most recent update time
