@@ -12,6 +12,9 @@ df['date'] = pd.to_datetime(df['date'])
 df2 = pd.read_csv('../Datasets/stateunemployment2010-2020.csv')
 df2['date'] = pd.to_datetime(df2['date'])
 
+df3 = pd.read_csv('../Datasets/grossoutput1998-2019.csv')
+df3['date'] = pd.to_datetime(df3['date'])
+
 app = dash.Dash()
 
 # Us econ Line Chart
@@ -31,6 +34,27 @@ app.layout = html.Div(children=[
     html.Div('US economy statistics from 1/1/2010 to 10/1/2020', style={'textAlign': 'center'}),
     html.Br(),
     html.Br(),
+    html.Hr(style={'color': '#7FDBFF'}),
+    html.H3('Interactive Line Chart', style={'color': '#df1e56'}),
+    html.Div('This line chart represents the change in gross output per year by industry.'),
+    dcc.Graph(id='graph0'),
+    html.Div('Please select an industry', style={'color': '#ef3e18', 'margin': '10px'}),
+    dcc.Dropdown(
+        id='select-industry',
+        options=[
+            {'label': 'All', 'value': 'all'},
+            {'label': 'Farms', 'value': 'farms'},
+            {'label': 'Oil and Gas', 'value': 'oil_and_gas'},
+            {'label': 'Utilities', 'value': 'utilities'},
+            {'label': 'Construction', 'value': 'construction'},
+            {'label': 'Manufacturing', 'value': 'manufacturing'},
+            {'label': 'Wholesale Trade', 'value': 'wholesale_trade'},
+            {'label': 'Retail Trade', 'value': 'retail_trade'},
+            {'label': 'Air Transportation', 'value': 'air_transportation'},
+            {'label': 'Real Estate', 'value': 'real_estate'},
+        ],
+        value='all'
+    ),
     html.Hr(style={'color': '#7FDBFF'}),
     html.H3('Interactive Line Chart', style={'color': '#df1e56'}),
     html.Div('This line chart represents the unemployment rate by state.'),
@@ -89,6 +113,17 @@ def update_figure(selected_state):
     return {'data': data_state_unemployment, 'layout': go.Layout(title='Unemployment rate in ' + selected_state,
                                                                  xaxis={'title': 'State'},
                                                                  yaxis={'title': 'Unemployment Rate'})}
+
+@app.callback(Output('graph0', 'figure'),
+              [Input('select-industry', 'value')])
+def update_figure(selected_industry):
+    new_df = df3[df3['industry'] == selected_industry]
+
+    data_gross_output = [
+        go.Scatter(x=new_df['date'], y=new_df['gross_output_change'], mode='lines', name='Unemployment')]
+    return {'data': data_gross_output, 'layout': go.Layout(title='Gross Output Change in ' + selected_industry,
+                                                                 xaxis={'title': 'Industry'},
+                                                                 yaxis={'title': 'Gross Output'})}
 
 
 if __name__ == '__main__':
