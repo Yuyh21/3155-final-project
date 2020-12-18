@@ -18,9 +18,12 @@ df3['date'] = pd.to_datetime(df3['date'])
 app = dash.Dash()
 
 # Us econ Line Chart
-data_salary = [go.Scatter(x=df['date'], y=df['avgsalary'], mode='lines', name='Average Salary')]
-data_imports = [go.Scatter(x=df['date'], y=df['imports'], mode='lines', name='Import Index')]
-data_unemployment = [go.Scatter(x=df['date'], y=df['unemployment'], mode='lines', name='Unemployment')]
+data_salary = [go.Scatter(x=df['date'], y=df['avgsalary'], mode='lines', name='Average Salary',
+                          line=dict(color='#09C100'))]
+data_imports = [go.Scatter(x=df['date'], y=df['imports'], mode='lines', name='Import Index',
+                           line=dict(color='#0058C1'))]
+data_unemployment = [go.Scatter(x=df['date'], y=df['unemployment'], mode='lines', name='Unemployment',
+                                line=dict(color='#B30000'))]
 
 # Layout
 app.layout = html.Div(children=[
@@ -31,12 +34,19 @@ app.layout = html.Div(children=[
             }
             ),
     html.Div('Web dashboard for Data Visualization using Python', style={'textAlign': 'center'}),
-    html.Div('US economy statistics from 1/1/2010 to 10/1/2020', style={'textAlign': 'center'}),
+    html.Div('US economy statistics from 12/1/1998 to 10/1/2020', style={'textAlign': 'center'}),
     html.Br(),
     html.Br(),
-    html.Hr(style={'color': '#7FDBFF'}),
-    html.H3('Interactive Line Chart', style={'color': '#df1e56'}),
-    html.Div('This line chart represents the change in gross output per year by industry.'),
+    html.Div('This app contains information pertaining to the US economy in various forms. Currently, there are '
+             'unemployment rates, gross output for various industries, and how the US has done with importing goods '
+             'over the last 10-20 years.',
+             style={'textAlign': 'center', 'font-size': '30px'}),
+    html.Br(),
+    html.Br(),
+    html.Hr(style={'textAlign': 'center', 'color': '#7FDBFF'}),
+    html.H3('Gross Output', style={'color': '#df1e56', 'font-size': '25px', 'textAlign': 'center'}),
+    html.Div('This line chart represents the change in gross output per year by industry.',
+             style={'textAlign': 'center'}),
     dcc.Graph(id='graph0'),
     html.Div('Please select an industry', style={'color': '#ef3e18', 'margin': '10px'}),
     dcc.Dropdown(
@@ -56,8 +66,9 @@ app.layout = html.Div(children=[
         value='all'
     ),
     html.Hr(style={'color': '#7FDBFF'}),
-    html.H3('Interactive Line Chart', style={'color': '#df1e56'}),
-    html.Div('This line chart represents the unemployment rate by state.'),
+    html.H3('Unemployment', style={'color': '#df1e56', 'font-size': '25px', 'textAlign': 'center'}),
+    html.Div('This line chart represents the unemployment rate by individual state.',
+             style={'textAlign': 'center'}),
     dcc.Graph(id='graph1'),
     html.Div('Please select a state', style={'color': '#ef3e18', 'margin': '10px'}),
     dcc.Dropdown(
@@ -70,34 +81,41 @@ app.layout = html.Div(children=[
         value='nc'
     ),
     html.Hr(style={'color': '#7FDBFF'}),
-    html.H3('Line chart', style={'color': '#df1e56'}),
-    html.Div('This line chart represents the import index in the united states from Jan 2010 through Oct 2020.'),
+    html.H3('Import Index', style={'color': '#df1e56', 'font-size': '25px', 'textAlign': 'center'}),
+    html.Div('This line chart represents the import index in the United States from Jan 2010 through Oct 2020.',
+             style={'textAlign': 'center'}),
     dcc.Graph(id='graph3',
               figure={
                   'data': data_imports,
-                  'layout': go.Layout(title='Import Index For the United States',
-                                      xaxis={'title': 'Date'}, yaxis={'title': 'Index'})
+                  'layout': go.Layout(title='',
+                                      xaxis={'title': 'Date'}, yaxis={'title': 'Index'},
+                                      plot_bgcolor='#EBEBEB')
               }
               ),
     html.Hr(style={'color': '#7FDBFF'}),
-    html.H3('Line chart', style={'color': '#df1e56'}),
-    html.Div('This line chart represents the unemployment rate in the united states from Jan 2010 through Oct 2020.'),
+    html.H3('Unemployment', style={'color': '#df1e56', 'font-size': '25px', 'textAlign': 'center'}),
+    html.Div('This line chart represents the unemployment rate in the united states from Jan 2010 through Oct 2020.',
+             style={'textAlign': 'center'}),
     dcc.Graph(id='graph4',
               figure={
                   'data': data_unemployment,
-                  'layout': go.Layout(title='Unemployment Rate in the United States',
-                                      xaxis={'title': 'Date'}, yaxis={'title': 'Unemployment'})
+                  'layout': go.Layout(title='',
+                                      xaxis={'title': 'Date'}, yaxis={'title': 'Unemployment'},
+                                      plot_bgcolor='#EBEBEB')
               }
               ),
     html.Hr(style={'color': '#7FDBFF'}),
-    html.H3('Line chart', style={'color': '#df1e56'}),
+    html.H3('Salary', style={'color': '#df1e56', 'font-size': '25px', 'textAlign': 'center'}),
     html.Div('This line chart represents the average salary of '
-             'workers in the united states from Jan 2010 through Oct 2020.'),
+             'workers in the united states from Jan 2010 through Oct 2020.',
+             style={'textAlign': 'center'}),
     dcc.Graph(id='graph2',
               figure={
                   'data': data_salary,
-                  'layout': go.Layout(title='Avg Salary',
-                                      xaxis={'title': 'Date'}, yaxis={'title': 'Salary'})
+                  'layout': go.Layout(title='',
+                                      xaxis={'title': 'Date'}, yaxis={'title': 'Salary'},
+                                      plot_bgcolor='#EBEBEB')
+
               }
               )
 ])
@@ -109,10 +127,13 @@ def update_figure(selected_state):
     new_df = df2[df2['state'] == selected_state]
 
     data_state_unemployment = [
-        go.Scatter(x=new_df['date'], y=new_df['unemployment'], mode='lines', name='Unemployment')]
-    return {'data': data_state_unemployment, 'layout': go.Layout(title='Unemployment rate in ' + selected_state,
-                                                                 xaxis={'title': 'State'},
-                                                                 yaxis={'title': 'Unemployment Rate'})}
+        go.Scatter(x=new_df['date'], y=new_df['unemployment'], mode='lines', name='Unemployment',
+                   line=dict(color='#7100F9'))]
+    return {'data': data_state_unemployment, 'layout': go.Layout(title='',
+                                                                 xaxis={'title': 'Date'},
+                                                                 yaxis={'title': 'Unemployment Rate'},
+                                                                 plot_bgcolor='#EBEBEB')}
+
 
 @app.callback(Output('graph0', 'figure'),
               [Input('select-industry', 'value')])
@@ -121,9 +142,10 @@ def update_figure(selected_industry):
 
     data_gross_output = [
         go.Scatter(x=new_df['date'], y=new_df['gross_output_change'], mode='lines', name='Unemployment')]
-    return {'data': data_gross_output, 'layout': go.Layout(title='Gross Output Change in ' + selected_industry,
-                                                                 xaxis={'title': 'Industry'},
-                                                                 yaxis={'title': 'Gross Output'})}
+    return {'data': data_gross_output, 'layout': go.Layout(title='',
+                                                           xaxis={'title': 'Date'},
+                                                           yaxis={'title': 'Gross Output'},
+                                                           plot_bgcolor='#EBEBEB')}
 
 
 if __name__ == '__main__':
