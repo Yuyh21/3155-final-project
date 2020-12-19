@@ -15,6 +15,8 @@ df2['date'] = pd.to_datetime(df2['date'])
 df3 = pd.read_csv('../Datasets/grossoutput1998-2019.csv')
 df3['date'] = pd.to_datetime(df3['date'])
 
+df4 = pd.read_csv('../Datasets/unemploymentAllStates.csv')
+
 app = dash.Dash()
 
 # Us econ Line Chart
@@ -24,6 +26,8 @@ data_imports = [go.Scatter(x=df['date'], y=df['imports'], mode='lines', name='Im
                            line=dict(color='#0058C1'))]
 data_unemployment = [go.Scatter(x=df['date'], y=df['unemployment'], mode='lines', name='Unemployment',
                                 line=dict(color='#B30000'))]
+
+data_unemploymentbarchart = [go.Bar(x=df4['state'], y=df4['unemployment'])]
 
 # Layout
 app.layout = html.Div(children=[
@@ -81,6 +85,19 @@ app.layout = html.Div(children=[
         value='nc'
     ),
     html.Hr(style={'color': '#7FDBFF'}),
+    html.H3('Unemployment', style={'color': '#df1e56', 'font-size': '25px', 'textAlign': 'center'}),
+    html.Div('This bar chart represents the unemployment rate as of the last update, Dec 19th, 2020.',
+             style={'textAlign': 'center'}),
+    dcc.Graph(id='graph2',
+              figure={
+                  'data': data_unemploymentbarchart,
+                  'layout': go.Layout(title='',
+                                      xaxis={'title': 'State'}, yaxis={'title': 'Unemployment'},
+                                      plot_bgcolor='#EBEBEB')
+              }
+              ),
+    html.Br(),
+    html.Hr(style={'color': '#7FDBFF'}),
     html.H3('Import Index', style={'color': '#df1e56', 'font-size': '25px', 'textAlign': 'center'}),
     html.Div('This line chart represents the import index in the United States from Jan 2010 through Oct 2020.',
              style={'textAlign': 'center'}),
@@ -109,7 +126,7 @@ app.layout = html.Div(children=[
     html.Div('This line chart represents the average salary of '
              'workers in the united states from Jan 2010 through Oct 2020.',
              style={'textAlign': 'center'}),
-    dcc.Graph(id='graph2',
+    dcc.Graph(id='graph5',
               figure={
                   'data': data_salary,
                   'layout': go.Layout(title='',
